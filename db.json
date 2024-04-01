@@ -1,0 +1,18 @@
+{
+  "todos": [
+    {
+      "id": 2,
+      "title": "Learn CSS",
+      "desc": "Cascading style sheet",
+      "due_date": "24-02-2024",
+      "status": false
+    },
+    {
+      "title": "Learn HTML",
+      "desc": "Hyper Text Markup Langauge",
+      "due_date": "2024-04-11",
+      "status": false,
+      "id": 3
+    }
+  ]
+}
