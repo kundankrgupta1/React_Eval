@@ -54,13 +54,14 @@ const Home = () => {
 					<Button>Add New Task</Button>
 				</Link>
 			</Flex>
-			<Box display={'flex'} flexWrap={'wrap'} gap={2}>
-				{data.length === 0 ? <Text>Not Completed/Pending Task</Text> :
+			<Box display={'flex'} flexWrap={'wrap'} gap={2} mt={5}>
+				{data.length === 0 ? <Text w={'100%'} textAlign={'center'}>Not Completed/Pending Task</Text> :
 					<>
 						{
 							data.map((e, ind) => <TaskCard key={ind} {...e} handleToggle={handleToggle} handleDelete={handleDelete} />)
 						}
-					</>}
+					</>
+				}
 			</Box>
 		</Box>
 	)

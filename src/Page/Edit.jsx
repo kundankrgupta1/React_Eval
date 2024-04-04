@@ -1,8 +1,7 @@
 import { Alert, AlertIcon, Box, Button, Checkbox, FormControl, Heading, Input, Textarea } from "@chakra-ui/react"
-import { Link, useNavigate } from "react-router-dom"
-import { useState, useReducer } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useState, useReducer, useEffect } from "react"
 import axios from "axios"
-
 
 const InitialState = {
 	title: "",
@@ -28,17 +27,18 @@ const formReducer = (state, action) => {
 		}
 	}
 }
-const AddTask = () => {
+const Edit = () => {
 	const [state, dispatch] = useReducer(formReducer, InitialState)
 	const [message, setMessage] = useState("")
 	const navigate = useNavigate();
+	const { id } = useParams();
 
-	const handleSubmit = (e) => {
+	const handleUpdate = (e) => {
 		e.preventDefault();
 		axios({
-			method: "POST",
+			method: "PUT",
 			baseURL: "http://localhost:8080",
-			url: "/todos",
+			url: `/todos${id}`,
 			data: state
 		})
 		dispatch({ type: "RESET" });
@@ -46,7 +46,7 @@ const AddTask = () => {
 		setMessage(
 			<Alert status='success' variant='solid' rounded={'lg'}>
 				<AlertIcon />
-				Data Submitted Successfully!
+				Data Updated Successfully!
 			</Alert>
 		)
 
@@ -55,27 +55,30 @@ const AddTask = () => {
 		}, 1000)
 	}
 
+	useEffect(() => {
+
+	}, [])
 
 	return (
 		<Box maxW={350} m={'auto'} mt={2} borderWidth={2} p={2} textAlign={'center'} rounded={'lg'}>
-			<Heading mb={5}>Add New Task</Heading>
+			<Heading mb={5}>Edit Existing Task</Heading>
 			<Box>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleUpdate}>
 					<FormControl>
-						<Input mb={3} type='text' placeholder="Task Name" name="title"
+						<Input mb={3} type='text' placeholder="Task Name" name="title" value={localStorage.getItem("title")}
 							onChange={(e) => dispatch({ type: "TITLE", payload: e.target.value })} />
 
-						<Textarea mb={3} placeholder="Task Descriptions" name="desc"
+						<Textarea mb={3} placeholder="Task Descriptions" name="desc" value={localStorage.getItem("desc")}
 							onChange={(e) => dispatch({ type: "DESC", payload: e.target.value })} />
 
-						<Input mb={3} type='date' name="due_date"
+						<Input mb={3} type='date' name="due_date" value={localStorage.getItem("due_date")}
 							onChange={(e) => dispatch({ type: "DUE_DATE", payload: e.target.value })} />
 
-						<Checkbox mb={3} name="status"
-							onChange={(e) => dispatch({ type: "STATUS", payload: e.target.checked })}>Completed?</Checkbox>
+						<Checkbox mb={3} name="status" value={localStorage.getItem("status")}
+							onChange={(e) => dispatch({ type: "STATUS", payload: e.target.value })}>Completed?</Checkbox>
 
 					</FormControl>
-					<Button type="submit" width={'100%'} bg={'blue.400'} _hover={'none'}>Submit</Button>
+					<Button type="submit" width={'100%'} bg={'blue.400'} _hover={'none'}>Update</Button>
 				</form>
 			</Box>
 			<Link to="/">
@@ -86,6 +89,6 @@ const AddTask = () => {
 	)
 }
 
-export default AddTask
+export default Edit
 
 
